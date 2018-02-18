@@ -1,0 +1,15 @@
+---
+- hosts: master
+  become: true
+  remote_user: ec2-user
+  roles:
+    - os
+    - prometheus
+    - prometheus-node
+
+- hosts: nodes
+  become: true
+  remote_user: ec2-user
+  roles:
+    - os
+    - prometheus-node

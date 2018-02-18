@@ -1,0 +1,23 @@
+---
+- name: Create node-exporter directory
+  file:
+    dest: /opt/prometheus-node
+    state: directory
+
+- name: Download the node exporter
+  unarchive:
+    src: https://github.com/prometheus/node_exporter/releases/download/v0.15.2/node_exporter-0.15.2.linux-amd64.tar.gz
+    dest: /opt/prometheus-node
+    remote_src: yes
+    extra_opts: [--strip-components=1]
+    creates: /opt/prometheus-node/node-exporter
+
+- name: Create init script
+  template:
+    src: init.conf.j2
+    dest: /etc/init/node-exporter.conf
+
+- name: Start service
+  service:
+    name: node-exporter
+    state: started

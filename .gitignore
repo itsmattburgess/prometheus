@@ -1,0 +1,4 @@
+.terraform
+ansible/inventory
+terraform.tfstate
+terraform.tfstate.backup

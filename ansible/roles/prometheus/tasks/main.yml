@@ -1,0 +1,34 @@
+---
+- name: Create /opt directory
+  file:
+    dest: /opt/prometheus
+    state: directory
+
+- name: Download and extract the binaries
+  unarchive:
+    src: https://github.com/prometheus/prometheus/releases/download/v2.1.0/prometheus-2.1.0.linux-amd64.tar.gz
+    dest: /opt/prometheus
+    remote_src: yes
+    extra_opts: [--strip-components=1]
+    creates: /opt/prometheus/prometheus
+
+- name: Add configuration file
+  template:
+    src: prometheus.yml.j2
+    dest: /opt/prometheus/prometheus.yml
+
+- name: Create binary symlink
+  file:
+    src: /opt/prometheus/prometheus
+    dest: /usr/bin/prometheus
+    state: link
+
+- name: Add init script
+  template:
+    src: init.conf.j2
+    dest: /etc/init/prometheus.conf
+
+- name: Start prometheus service
+  service:
+    name: prometheus
+    state: started
