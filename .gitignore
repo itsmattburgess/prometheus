@@ -2,3 +2,4 @@
 ansible/inventory
 terraform.tfstate
 terraform.tfstate.backup
+playbook.retry
